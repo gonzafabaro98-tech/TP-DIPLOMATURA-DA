@@ -271,15 +271,31 @@ def construir_indice_rubros(paquetes_rubro):
     Los paquetes tienen la misma forma que en ancho_a_largo(), pero sus
     columnas son los 4 rubros (sin columna de total).
     """
-    indice = {}
+    indice = {}    
+    for paquete in paquetes_rubro:
+        provincia = paquete["provincia"]
+        columnas = paquete["orden_columnas"]
 
-    # TODO 8a -------------------------------------------------------------
-    # Pistas:
-    #   - Para el rubro con mayor valor:  max(dic, key=dic.get)
-    #   - El total del año es la suma de los 4 rubros: sum(dic.values())
-    #   - Descartá los valores None antes de sumar.
-    raise NotImplementedError("TODO 8a: implementá construir_indice_rubros()")
-    # ---------------------------------------------------------------------
+        for fila_cruda in paquete["data"]:
+            anio = extraer_anio(fila_cruda[0])
+            valores = {
+                nombre: valor
+                for nombre, valor in zip(columnas, fila_cruda[1:])
+                if valor is not None
+            }
+            if not valores:
+                continue
+
+            total = sum(valores.values())
+            primarios = valores.get("Productos primarios")
+            pp_pct = None
+            if primarios is not None:
+                pp_pct = calcular_participacion(primarios, total)
+
+            indice[(provincia, anio)] = {
+                "rubro_principal": max(valores, key=valores.get),
+                "pp_participacion_pct": pp_pct,
+            }
 
     logging.info("  índice de rubros: %s claves (provincia, año)", len(indice))
     return indice
@@ -293,11 +309,11 @@ def unir_con_rubros(filas, indice_rubros):
 
     CONTRATO: modifica y devuelve la misma lista de filas.
     """
-    # TODO 8b -------------------------------------------------------------
-    # Para cada fila, buscá indice_rubros.get((provincia, anio)) y asigná
-    # 'rubro_principal' y 'pp_participacion_pct'. Si no hay match, None.
-    raise NotImplementedError("TODO 8b: implementá unir_con_rubros()")
-    # ---------------------------------------------------------------------
+    for fila in filas:
+        datos = indice_rubros.get((fila["provincia"], fila["anio"]), {})
+        fila["rubro_principal"] = datos.get("rubro_principal")
+        fila["pp_participacion_pct"] = datos.get("pp_participacion_pct")
+    return filas
 
 
 # ======================================================================
