@@ -44,6 +44,7 @@ def configurar_logging():
 
 
 def main(sin_internet=False):
+    """Orquesta el pipeline completo: extrae, transforma y carga."""
     configurar_logging()
     logging.info("=" * 62)
     logging.info("PIPELINE EXPORTACIONES NEA — inicio")
