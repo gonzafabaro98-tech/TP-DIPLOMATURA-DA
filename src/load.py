@@ -59,11 +59,9 @@ def chequear_unicidad(filas):
 
     Debe devolver (bool, mensaje), igual que los checks de arriba.
     """
-    # TODO 9 --------------------------------------------------------------
-    # Pista: es el patrón del set que viste en la Clase 3. Armá la lista de
-    # claves (una tupla por fila) y compará len(lista) con len(set(lista)).
-    raise NotImplementedError("TODO 9: implementá chequear_unicidad()")
-    # ---------------------------------------------------------------------
+    claves = [(f["provincia"], f["anio"], f["destino"]) for f in filas]
+    duplicadas = len(claves) - len(set(claves))
+    return duplicadas == 0, f"unicidad: {duplicadas} filas duplicadas"
 
 
 def chequear_rangos(filas):
@@ -72,11 +70,11 @@ def chequear_rangos(filas):
     Un valor negativo o mayor a config.VALOR_MAXIMO_RAZONABLE es
     sospechoso: no existen exportaciones negativas.
     """
-    # TODO 10 -------------------------------------------------------------
-    # Pista: una comprensión de lista con la condición al final te da
-    # directamente las filas fuera de rango; después mirás cuántas son.
-    raise NotImplementedError("TODO 10: implementá chequear_rangos()")
-    # ---------------------------------------------------------------------
+    fuera_de_rango = [
+        f for f in filas
+        if f["valor_musd"] < 0 or f["valor_musd"] > config.VALOR_MAXIMO_RAZONABLE
+    ]
+    return len(fuera_de_rango) == 0, f"rangos: {len(fuera_de_rango)} valores fuera de rango"
 
 
 def chequear_cobertura(filas):
