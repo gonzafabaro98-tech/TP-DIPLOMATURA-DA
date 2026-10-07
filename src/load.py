@@ -192,10 +192,16 @@ def guardar_resumen(resumen, carpeta=None, nombre=None):
     Acordate de los dos argumentos que vimos: ensure_ascii=False para que
     las tildes se guarden bien, e indent=2 para que sea legible.
     """
-    # TODO 12a ------------------------------------------------------------
-    # Muy parecido a guardar_csv(), pero con json.dump().
-    raise NotImplementedError("TODO 12a: implementá guardar_resumen()")
-    # ---------------------------------------------------------------------
+    carpeta = carpeta or config.DIR_PROCESSED
+    nombre = nombre or config.ARCHIVO_SALIDA_JSON
+    os.makedirs(carpeta, exist_ok=True)
+    ruta = os.path.join(carpeta, nombre)
+
+    with open(ruta, "w", encoding="utf-8") as f:
+        json.dump(resumen, f, ensure_ascii=False, indent=2)
+
+    logging.info("  JSON: %s", ruta)
+    return ruta
 
 
 def escribir_log_corrida(resumen, carpeta=None, nombre=None):
@@ -206,9 +212,20 @@ def escribir_log_corrida(resumen, carpeta=None, nombre=None):
 
         2026-08-02 14:30 | OK | 1408 filas | 1993-2024
     """
-    # TODO 12b ------------------------------------------------------------
-    raise NotImplementedError("TODO 12b: implementá escribir_log_corrida()")
-    # ---------------------------------------------------------------------
+    carpeta = carpeta or config.DIR_LOGS
+    nombre = nombre or config.ARCHIVO_LOG
+    os.makedirs(carpeta, exist_ok=True)
+    ruta = os.path.join(carpeta, nombre)
+
+    periodo = resumen["periodo"]
+    linea = (f"{resumen['generado']} | OK | {resumen['filas']} filas | "
+             f"{periodo['desde']}-{periodo['hasta']}\n")
+
+    with open(ruta, "a", encoding="utf-8") as f:
+        f.write(linea)
+
+    logging.info("  LOG: %s", ruta)
+    return ruta
 
 
 def cargar(filas):
