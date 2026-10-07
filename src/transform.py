@@ -196,11 +196,11 @@ def calcular_variacion(actual, anterior):
     Fórmula:  (actual - anterior) / anterior * 100
     Ejemplo:  actual=110.93, anterior=75.79  ->  46.36
 
-    Devolvé None si 'anterior' es None o cero. Redondeá a 2 decimales.
+    Devuelve None si 'anterior' es None o cero. Redondea a 2 decimales.
     """
-    # TODO 5 --------------------------------------------------------------
-    raise NotImplementedError("TODO 5: implementá calcular_variacion()")
-    # ---------------------------------------------------------------------
+    if anterior is None or anterior == 0:
+        return None
+    return round((actual - anterior) / anterior * 100, 2)
 
 
 def agregar_variacion_interanual(filas):
