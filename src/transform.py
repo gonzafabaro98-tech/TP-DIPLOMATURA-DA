@@ -237,16 +237,18 @@ def agregar_ranking(filas, top_n=None):
     if top_n is None:
         top_n = config.TOP_N
 
-    # TODO 7 --------------------------------------------------------------
-    # Estrategia sugerida:
-    #   1. Agrupá las filas en un dict cuya clave sea (provincia, anio).
-    #      Pista: dict.setdefault(clave, []).append(fila)
-    #   2. Para cada grupo, ordenalo por valor_musd de mayor a menor:
-    #      sorted(grupo, key=lambda f: f["valor_musd"], reverse=True)
-    #   3. Recorré el grupo ordenado con enumerate(..., start=1) y asigná
-    #      'ranking_destino' y 'es_top3' (un booleano: posición <= top_n).
-    raise NotImplementedError("TODO 7: implementá agregar_ranking()")
-    # ---------------------------------------------------------------------
+    grupos = {}
+    for fila in filas:
+        clave = (fila["provincia"], fila["anio"])
+        grupos.setdefault(clave, []).append(fila)
+
+    for grupo in grupos.values():
+        ordenado = sorted(grupo, key=lambda f: f["valor_musd"], reverse=True)
+        for posicion, fila in enumerate(ordenado, start=1):
+            fila["ranking_destino"] = posicion
+            fila["es_top3"] = posicion <= top_n
+
+    return filas
 
 
 # ======================================================================
