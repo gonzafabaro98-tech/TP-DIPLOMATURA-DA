@@ -168,9 +168,9 @@ def calcular_participacion(valor, total):
     programa, y un dato ausente es más honesto que un cero inventado.
     Redondeá a 2 decimales.
     """
-    # TODO 4 --------------------------------------------------------------
-    raise NotImplementedError("TODO 4: implementá calcular_participacion()")
-    # ---------------------------------------------------------------------
+    if total is None or total == 0:
+        return None
+    return round(valor / total * 100, 2)
 
 
 def agregar_derivadas_simples(filas):
