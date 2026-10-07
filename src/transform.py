@@ -148,11 +148,7 @@ def clasificar_region(destino):
     El mapeo está en config.REGIONES. Si el país NO está en el
     diccionario, devolvé config.REGION_POR_DEFECTO en lugar de romper.
     """
-    # TODO 2 --------------------------------------------------------------
-    # Una sola línea. Pista: el método .get() de los diccionarios acepta
-    # un segundo argumento con el valor por defecto (lo viste en la Clase 3).
-    raise NotImplementedError("TODO 2: implementá clasificar_region()")
-    # ---------------------------------------------------------------------
+    return config.REGIONES.get(destino, config.REGION_POR_DEFECTO)
 
 
 def calcular_decada(anio):
@@ -160,12 +156,7 @@ def calcular_decada(anio):
 
     Ejemplos:  1993 -> '1990s'   |   2024 -> '2020s'
     """
-    # TODO 3 --------------------------------------------------------------
-    # Pista: la división entera // te da el inicio de la década.
-    #        ¿Cuánto vale (1993 // 10) * 10 ?
-    #        Después armá el texto con una f-string.
-    raise NotImplementedError("TODO 3: implementá calcular_decada()")
-    # ---------------------------------------------------------------------
+    return f"{(anio // 10) * 10}s"
 
 
 def calcular_participacion(valor, total):
